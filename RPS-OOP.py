@@ -1,8 +1,8 @@
 import random as rd
-import time as tm
+import datetime as dt
 
 class RPS:
-    def __init__(self):
+    def init(self):
         print("Rock, Paper, Scissors... Shoot!")
 
     def modes(self):
@@ -105,31 +105,68 @@ class RPS:
 
     def blitzMode(self):
         _ques = input('Are U Ready: ')
-        trials = int(input('Trials -> ')
+        trials = int(input('Trials -> '))
         valid = ["Yes", "YES", "yes", "y", "Y"]
         check = lambda valid, _ques: True if _ques in valid else False
         if (check(valid, _ques)):
             for i in range(trials):
-                self.normalMode()
-                tm.sleep(0.1)
+                now = dt.datetime.now()
+                user_choice = input('[R/P/S] -> ')
+                _now = dt.datetime.now()
+                # Time Entry Speed to just a second in this blitzMode
+                if ((u_choice for u_choice in user_choice) == '' or (len(u_choice) for u_choice in user_choice) == 0) and ((_now - now).seconds > 5):
+                    user_choice = ''
+                    self.winId.append("AI")
+                else:
+                    computer_choice = self.random_choice[rd.randint(0, 2)]
+                    self.rules(user_choice, computer_choice)
+        if len(self.winId) == 1:
+            print(f"{self.winId[0]} Wins this Round!")
+        if self.winId.count(self.username) == self.winId.count("AI"):
+            print("'Twas a Tie!")
+        if trials % 2 == 0:
+            if self.winId.count(self.username) > ((trials/2)+1):
+                print(f"{self.username} Wins this Round!")
+            elif self.winId.count('AI') >= ((trials/2)+1):
+                print(f"Computer AI Wins")
+            else:
+                pass
+        else:
+            if self.winId.count(self.username) > ((trials/2)+0.5):
+                print(f"{self.username} Wins this Round!")
+            elif self.winId.count('AI') >= ((trials/2)+0.5):
+                print(f"Computer AI Wins")
+            else:
+                pass
+        print()
 
+    def runner(self, class_object: str):
+        class_object = RPS()
+        print(class_object.init())
+        print(class_object.modes())
+        choice = input('Mode -> ')
+        if choice == '1':
+            print(class_object.normalMode())
+        elif choice == '2':
+            print(class_object.bestMode())
+        elif choice == '3':
+            print(class_object.blitzMode())
+        else:
+            self.runner()
 
     _q = input('[Y/N]: ')
 
+    @property
+    def q(self):
+        return self._q
+
 
 valid = ["Yes", "YES", "yes", "y", "Y"]
-myRPS = RPS()
+RPS_Instance = RPS()
 while True:
-    if myRPS._q not in valid:
+    if RPS_Instance.q not in valid:
         break
     else:
-        print(myRPS)
-        print(myRPS.modes())
-        choice = input('Mode -> ')
-        if choice == '1':
-            print(myRPS.normalMode())
-        elif choice == '2':
-            print(myRPS.bestMode())
-        else:
-            print(myRPS.blitzMode())
+        RPS_Instance.runner('myRPS')
         print()
+
